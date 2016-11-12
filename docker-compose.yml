@@ -1,0 +1,18 @@
+version: '2'
+services:
+  pypi:
+    build: .
+    environment:
+      AWS_ACCESS_KEY_ID: my_aws_access_key
+      AWS_SECRET_ACCESS_KEY: my_aws_secret_access_key
+      ADMIN_USERNAME: admin
+      ADMIN_PASSWORD: admin
+      S3_BUCKET: my_s3_bucket
+
+
+#export ENV=prod
+#export AWS_ACCESS_KEY_ID=abc
+#export AWS_SECRET_ACCESS_KEY=def
+#export ADMIN_USERNAME=admin
+#export ADMIN_PASSWORD=admin
+#export S3_BUCKET=my_s3_bucket
