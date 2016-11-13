@@ -1,15 +1,18 @@
 FROM python:2.7
 
 WORKDIR /code
-#VOLUME /code
 
 RUN cd /code \
     && virtualenv venv \
     && ./venv/bin/pip install pypicloud[server] uwsgi
 
+RUN apt-get update \
+    && apt-get install -y nginx
+
+EXPOSE 80
+
 ENV ENV prod
 
-ADD make_config.py /code
-ADD entry.sh /code
+ADD override /
 
 ENTRYPOINT ["bash", "/code/entry.sh"]

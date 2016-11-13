@@ -3,11 +3,19 @@ services:
   pypi:
     build: .
     environment:
-      AWS_ACCESS_KEY_ID: my_aws_access_key
-      AWS_SECRET_ACCESS_KEY: my_aws_secret_access_key
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: admin
-      S3_BUCKET: my_s3_bucket
+      # STORAGE must be s3 or file
+      STORAGE: file
+      # In case STORAGE=s3, you need to setup following environment
+      AWS_ACCESS_KEY_ID: my_aws_access_key
+      AWS_SECRET_ACCESS_KEY: my_aws_secret_access_key
+      S3_BUCKET: my_bucket
+      # Turn off session secure in case don't have ssl.
+      # Value = "true" / "false" (must have quote)
+      SESSION_SECURE: "false"
+    ports:
+      - 7001:80
 
 
 #export ENV=prod

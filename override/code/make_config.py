@@ -13,31 +13,34 @@ def make_config():
 
     env = ['dev', test, prod]
 
-    :param password:
-    :param username:
-    :param env:
-    :param outfile:
     :return:
     """
     env = os.environ['ENV']
+    assert env in ['dev', 'test', 'prod'], "ENV must be dev/test/prod"
     username = os.environ['ADMIN_USERNAME']
     password = os.environ['ADMIN_PASSWORD']
 
     outfile = 'server.ini'
+    storage = os.environ['STORAGE']
+    assert storage in ['s3', 'file'], "STORAGE must be s3/file"
+
+    session_secure = os.environ.get('SESSION_SECURE')
+    if not session_secure:
+        session_secure = env == 'prod'
 
     data = {
         'env': env,
         'reload_templates': env == 'dev',
-        'storage': 's3',
-        'access_key': os.environ['AWS_ACCESS_KEY_ID'],
-        'secret_key': os.environ['AWS_SECRET_ACCESS_KEY'],
-        's3_bucket': os.environ['S3_BUCKET'],
+        'storage': storage,
         'encrypt_key': b64encode(os.urandom(32)),
         'validate_key': b64encode(os.urandom(32)),
         'admin': username,
         'password': pwd_context.encrypt(password),
-        'session_secure': env == 'prod',
+        'session_secure': session_secure,
     }
+
+    if storage == 's3':
+        data.update(load_s3_params())
 
     if env == 'dev' or env == 'test':
         data['wsgi'] = 'waitress'
@@ -54,6 +57,14 @@ def make_config():
         ofile.write(config_file)
 
     print "Config file written to '%s'" % outfile
+
+
+def load_s3_params():
+    return {
+        'access_key': os.environ['AWS_ACCESS_KEY_ID'],
+        'secret_key': os.environ['AWS_SECRET_ACCESS_KEY'],
+        's3_bucket': os.environ['S3_BUCKET'],
+    }
 
 
 if __name__ == '__main__':
