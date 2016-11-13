@@ -5,9 +5,10 @@ WORKDIR /code
 RUN cd /code \
     && virtualenv venv \
     && ./venv/bin/pip install pypicloud[server] uwsgi
-
-RUN apt-get update \
-    && apt-get install -y nginx
+    && rm /root/.cache -rf \
+    && apt-get update \
+    && apt-get install -y nginx \
+    && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 80
 
