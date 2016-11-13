@@ -1,7 +1,8 @@
 version: '2'
 services:
   pypi:
-    build: .
+#    build: .
+    image: thongdong7/pypicloud
     environment:
       ADMIN_USERNAME: admin
       ADMIN_PASSWORD: admin

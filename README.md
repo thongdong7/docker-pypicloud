@@ -49,3 +49,9 @@ Now to upload a package you should run:
 ```
 python setup.py sdist upload -r pypicloud
 ```
+
+# Known issues
+
+## Bad gateway
+
+Maybe because of the session. Try to clear browser cache and try again.
