@@ -4,7 +4,7 @@ WORKDIR /code
 
 RUN cd /code \
     && virtualenv venv \
-    && ./venv/bin/pip install pypicloud[server] uwsgi
+    && ./venv/bin/pip install pypicloud[server] uwsgi \
     && rm /root/.cache -rf \
     && apt-get update \
     && apt-get install -y nginx \
