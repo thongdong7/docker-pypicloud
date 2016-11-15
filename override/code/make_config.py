@@ -2,9 +2,11 @@
 import os
 import sys
 from base64 import b64encode
+from os.path import abspath
+from os.path import dirname
+from os.path import join
 
 from jinja2 import Template
-from pkg_resources import resource_string  # pylint: disable=E0611
 from pypicloud.access import pwd_context
 
 
@@ -39,6 +41,8 @@ def make_config():
         'session_secure': session_secure,
     }
 
+    data.update(load_read_user())
+
     if storage == 's3':
         data.update(load_s3_params())
 
@@ -49,7 +53,9 @@ def make_config():
             data['venv'] = sys.prefix
         data['wsgi'] = 'uwsgi'
 
-    tmpl_str = resource_string('pypicloud', 'templates/config.ini.jinja2')
+    current_folder = abspath(dirname(__file__))
+    template_file = join(current_folder, 'config.ini.jinja2')
+    tmpl_str = open(template_file).read()
     template = Template(tmpl_str)
 
     config_file = template.render(**data)
@@ -66,6 +72,15 @@ def load_s3_params():
         's3_bucket': os.environ['S3_BUCKET'],
     }
 
+
+def load_read_user():
+    if 'READ_USER' in os.environ and 'READ_USER_PASSWORD' in os.environ:
+        return {
+            'read_user': os.environ['READ_USER'],
+            'read_user_password': pwd_context.encrypt(os.environ['READ_USER_PASSWORD']),
+        }
+
+    return {}
 
 if __name__ == '__main__':
     make_config()

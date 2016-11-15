@@ -15,13 +15,11 @@ services:
       # Turn off session secure in case don't have ssl.
       # Value = "true" / "false" (must have quote)
       SESSION_SECURE: "false"
+      # The user to read the package
+      READ_USER: guest
+      READ_USER_PASSWORD: guest
     ports:
       - 7001:80
 
 
-#export ENV=prod
-#export AWS_ACCESS_KEY_ID=abc
-#export AWS_SECRET_ACCESS_KEY=def
-#export ADMIN_USERNAME=admin
-#export ADMIN_PASSWORD=admin
-#export S3_BUCKET=my_s3_bucket
+

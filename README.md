@@ -34,7 +34,7 @@ index-url = http://localhost:7001/pypi/
 
 To upload packages, you will need to add your server as an index server inside your `$HOME/.pypirc`:
 
-```
+```ini
 [distutils]
 index-servers = pypicloud
 
