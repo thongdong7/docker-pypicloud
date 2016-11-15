@@ -39,7 +39,7 @@ To upload packages, you will need to add your server as an index server inside y
 index-servers = pypicloud
 
 [pypicloud]
-repository: http://localhost:6543/pypi/
+repository: http://localhost:7001/pypi/
 username: <<username>>
 password: <<password>>
 ```
@@ -47,11 +47,11 @@ password: <<password>>
 Now to upload a package you should run:
 
 ```
-python setup.py sdist upload -r pypicloud
+python setup.py bdist_wheel --universal upload -r pypicloud
 ```
 
-# Known issues
+# Issues and troubleshooting
 
 ## Bad gateway
 
-Maybe because of the session. Try to clear browser cache and try again.
+Maybe because you are run and shutdown the container multiple times. Each time, the session secret key on server is changed, so server does not recognize the old ssession from client. Let try to clear browser cache and try again.
